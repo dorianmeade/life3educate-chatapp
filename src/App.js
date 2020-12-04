@@ -1,6 +1,11 @@
 import React, {useEffect, useContext} from 'react'
 
 import './App.css';
+import { makeStyles } from '@material-ui/core/styles';
+
+import { Container } from 'reactstrap';
+import { ListGroup } from 'reactstrap';
+
 import {globalContext} from './state/GlobalState'
 import Header from './components/Header'
 import Input from './components/Input'
@@ -8,7 +13,18 @@ import Message from './components/Message'
 
 import {sendMsg} from './util/api'
 
+require('dotenv').config()
+const useStyles = makeStyles({
+  wrapper: {
+    margin: '0 auto'
+  }
+})
+
+
 function App() {
+  console.log(process.env.REACT_APP_API_URL); 
+
+  const classes = useStyles();
   const {state, dispatch} = useContext(globalContext)
 
   console.log(state.message_queue)
@@ -20,30 +36,38 @@ function App() {
       dispatch({type: 'enqueue_message', payload: {text: data, name:'bot'}})
     }
 
+    document
+      .querySelector('#bottom')
+      .scrollIntoView({ behavior: 'smooth' });
+
+
 }, [state.message_queue]);
 
   return (
-    <div className="App">
+    <Container className='App themed-container' style={{paddingBottom: 0}}>
       <Header/>
       <hr style={{height:2, border: 'none', color: "dimgray", backgroundColor:"dimgray"}}/>
       
 
-      <div style={{height: 670}}>
-      {state.message_queue.map((msg) => {
+      <Container className='themed-container' style={{height: 660, overflowY:'scroll', width: 700}}>
+      {state.message_queue.map((msg, index) => {
         return ( 
-          <Message 
+          <ListGroup>
+            <Message 
             msg={msg}
+            key={index}
             alt= {msg.name !== "bot"}
             style={{position: 'absolute'}}
-          />
+            />
+          </ListGroup>
         )
       })}
-      </div>
-      <div id="bottom"/>
-      <hr style={{height:2, border: 'none', color: "dimgray", backgroundColor:"dimgray"}}/>
+      <div id='bottom'/>
+      </Container> 
 
+      <hr style={{height:2, border: 'none', color: "dimgray", backgroundColor:"dimgray"}}/>
       <Input/>
-    </div>
+    </Container>
   );
 }
 

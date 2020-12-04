@@ -1,8 +1,17 @@
 import React from 'react'
+import logo from '../assets/logo.png'
 
 const Header = () => {
+    const style = {
+        color: '#66cdaa', 
+        fontWeight: 'bold', 
+        padding: 10
+    }
     return (
-        <h1>Life3Educate Chat</h1>
+        <div style={style}>
+        <img src={logo} style={{height: 100, width: 'auto'}}/> 
+        
+        </div>
     )
 }
 

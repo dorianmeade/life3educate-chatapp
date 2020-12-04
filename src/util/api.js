@@ -1,8 +1,10 @@
 const fetchSession = async () => {
+    console.log(process.env.REACT_APP_API_URL); 
     let id;
     if(!sessionStorage.getItem('session_id'))
     {
         let results = await fetch('https://server-life3educate.herokuapp.com/api/assistant/session')      
+        //let results = await fetch(`${process.env.REACT_APP_API_URL}/session`)      
 
         results = await results.json()
 
